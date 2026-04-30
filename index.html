@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常用命令工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 40px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .menu-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #e0e0e0;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .menu-card:hover {
+            border-color: #999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .menu-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .menu-title {
+            font-size: 1.3em;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .menu-desc {
+            color: #888;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        /* 备案信息样式 */
+        .footer {
+            margin-top: 40px;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 0.85em;
+        }
+
+        .beian-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            line-height: 1.8;
+        }
+
+        .beian-content a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .beian-content a:hover {
+            text-decoration: underline;
+        }
+
+        .beian-content img {
+            vertical-align: middle;
+            height: 16px;
+            margin-right: 4px;
+        }
+
+        .beian-notice {
+            color: #d32f2f;
+        }
+
+        /* 响应式布局 */
+        @media (max-width: 768px) {
+            .beian-content {
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            .beian-notice {
+                margin-bottom: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>常用命令工具</h1>
+
+        <div class="menu-grid">
+            <!-- 常用命令生成器 -->
+            <a href="常用命令生成器.html" class="menu-card">
+                <div class="menu-title">常用命令生成器</div>
+                <div class="menu-desc">输入参数生成对应的命令，支持自定义配置，适合需要动态生成命令的场景</div>
+            </a>
+
+            <!-- 一键复制常用命令 -->
+            <a href="一键复制常用命令.html" class="menu-card">
+                <div class="menu-title">一键复制常用命令</div>
+                <div class="menu-desc">收录常用的静态文件、Git、Docker等命令，点击即可一键复制</div>
+            </a>
+        </div>
+
+        <!-- 备案信息显示 -->
+        <div class="footer">
+            <div class="beian-content">
+                <span class="beian-notice">本站内容仅供学习和交流，非商业用途</span>
+                <span><a href="https://beian.miit.gov.cn/" target="_blank">浙ICP备案2025187466号</a></span>
+                <span><a href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33030402001483" target="_blank"><img src="https://www.937788.xyz/gonganbeian.png" alt="">浙公网安备33030402001483号</a></span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

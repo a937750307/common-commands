@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常用命令生成器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .back-link:hover {
+            color: #333;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            color: #333;
+            font-size: 1em;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #666;
+        }
+
+        .search-box input::placeholder {
+            color: #999;
+        }
+
+        .command-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .command-card.hidden {
+            display: none;
+        }
+
+        .command-title {
+            font-size: 1.1em;
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .command-desc {
+            color: #888;
+            margin-bottom: 16px;
+            font-size: 0.85em;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #fff;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #666;
+        }
+
+        .input-group input::placeholder {
+            color: #999;
+        }
+
+        .output-group {
+            margin-top: 16px;
+        }
+
+        .output-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .command-output {
+            background: #f9f9f9;
+            border-radius: 4px;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .command-output code {
+            display: block;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            color: #333;
+            word-break: break-all;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            display: block;
+            width: 100%;
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #333;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background: #555;
+        }
+
+        .copy-btn.copied {
+            background: #4caf50;
+        }
+
+        .no-result {
+            text-align: center;
+            color: #888;
+            padding: 40px;
+            display: none;
+        }
+
+        /* 备案信息样式 */
+        .footer {
+            margin-top: 40px;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 0.85em;
+        }
+
+        .beian-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            line-height: 1.8;
+        }
+
+        .beian-content a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .beian-content a:hover {
+            text-decoration: underline;
+        }
+
+        .beian-content img {
+            vertical-align: middle;
+            height: 16px;
+            margin-right: 4px;
+        }
+
+        .beian-notice {
+            color: #d32f2f;
+        }
+
+        /* 响应式布局 */
+        @media (max-width: 768px) {
+            .beian-content {
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            .beian-notice {
+                margin-bottom: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>常用命令生成器</h1>
+
+        <a href="index.html" class="back-link">← 返回首页</a>
+
+        <div class="search-box">
+            <input type="text" id="search" placeholder="搜索命令...">
+        </div>
+
+        <!-- 部署钩子 -->
+        <div class="command-card" data-keywords="部署钩子 curl post deploy">
+            <div class="command-title">部署钩子</div>
+            <div class="command-desc">生成curl命令来触发部署钩子</div>
+            
+            <div class="input-group">
+                <label for="deploy-url">部署钩子URL</label>
+                <input type="text" id="deploy-url" placeholder="例如: https://example.com/deploy">
+            </div>
+            
+            <div class="output-group">
+                <label>生成的命令：</label>
+                <div class="command-output">
+                    <code id="deploy-output">curl -X POST "请输入部署钩子URL"</code>
+                    <button class="copy-btn" onclick="copyCommand('deploy-output', this)">复制</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 强制覆盖GitHub仓库 -->
+        <div class="command-card" data-keywords="强制覆盖 github git push force">
+            <div class="command-title">强制覆盖GitHub仓库</div>
+            <div class="command-desc">强制推送本地仓库到GitHub（会覆盖远程仓库，请谨慎使用）</div>
+            
+            <div class="input-group">
+                <label for="github-repo">GitHub仓库地址</label>
+                <input type="text" id="github-repo" placeholder="例如: https://github.com/username/repo.git">
+            </div>
+            
+            <div class="input-group">
+                <label for="branch-name">分支名</label>
+                <input type="text" id="branch-name" placeholder="例如: main 或 master">
+            </div>
+            
+            <div class="output-group">
+                <label>生成的命令：</label>
+                <div class="command-output">
+                    <code id="github-output">git init && git add . && git commit -m "init" && git branch -M main && git remote add origin "请输入GitHub仓库地址" && git push -u origin "请输入分支名" --force</code>
+                    <button class="copy-btn" onclick="copyCommand('github-output', this)">复制</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 克隆指定分支 -->
+        <div class="command-card" data-keywords="克隆 clone git branch">
+            <div class="command-title">克隆指定分支</div>
+            <div class="command-desc">克隆GitHub仓库的指定分支</div>
+            
+            <div class="input-group">
+                <label for="clone-repo">GitHub仓库地址</label>
+                <input type="text" id="clone-repo" placeholder="例如: https://github.com/username/repo.git">
+            </div>
+            
+            <div class="input-group">
+                <label for="clone-branch">分支名</label>
+                <input type="text" id="clone-branch" placeholder="例如: develop">
+            </div>
+            
+            <div class="output-group">
+                <label>生成的命令：</label>
+                <div class="command-output">
+                    <code id="clone-output">git clone -b "请输入分支名" "请输入GitHub仓库地址"</code>
+                    <button class="copy-btn" onclick="copyCommand('clone-output', this)">复制</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-result" id="no-result">未找到匹配的命令</div>
+
+        <!-- 备案信息显示 -->
+        <div class="footer">
+            <div class="beian-content">
+                <span class="beian-notice">本站内容仅供学习和交流，非商业用途</span>
+                <span><a href="https://beian.miit.gov.cn/" target="_blank">浙ICP备案2025187466号</a></span>
+                <span><a href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33030402001483" target="_blank"><img src="https://www.937788.xyz/gonganbeian.png" alt="">浙公网安备33030402001483号</a></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 搜索功能
+        const searchInput = document.getElementById('search');
+        const cards = document.querySelectorAll('.command-card');
+        const noResult = document.getElementById('no-result');
+
+        searchInput.addEventListener('input', function() {
+            const keyword = this.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const keywords = card.getAttribute('data-keywords').toLowerCase();
+                const title = card.querySelector('.command-title').textContent.toLowerCase();
+                const desc = card.querySelector('.command-desc').textContent.toLowerCase();
+
+                if (keyword === '' || keywords.includes(keyword) || title.includes(keyword) || desc.includes(keyword)) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            noResult.style.display = visibleCount === 0 ? 'block' : 'none';
+        });
+
+        // 部署钩子
+        const deployUrlInput = document.getElementById('deploy-url');
+        const deployOutput = document.getElementById('deploy-output');
+        
+        deployUrlInput.addEventListener('input', function() {
+            const url = this.value.trim();
+            if (url) {
+                deployOutput.textContent = `curl -X POST "${url}"`;
+            } else {
+                deployOutput.textContent = 'curl -X POST "请输入部署钩子URL"';
+            }
+        });
+
+        // 强制覆盖GitHub仓库
+        const githubRepoInput = document.getElementById('github-repo');
+        const branchNameInput = document.getElementById('branch-name');
+        const githubOutput = document.getElementById('github-output');
+        
+        function updateGithubCommand() {
+            const repo = githubRepoInput.value.trim() || '请输入GitHub仓库地址';
+            const branch = branchNameInput.value.trim() || '请输入分支名';
+            githubOutput.textContent = `git init && git add . && git commit -m "init" && git branch -M main && git remote add origin "${repo}" && git push -u origin ${branch} --force`;
+        }
+        
+        githubRepoInput.addEventListener('input', updateGithubCommand);
+        branchNameInput.addEventListener('input', updateGithubCommand);
+
+        // 克隆指定分支
+        const cloneRepoInput = document.getElementById('clone-repo');
+        const cloneBranchInput = document.getElementById('clone-branch');
+        const cloneOutput = document.getElementById('clone-output');
+        
+        function updateCloneCommand() {
+            const repo = cloneRepoInput.value.trim() || '请输入GitHub仓库地址';
+            const branch = cloneBranchInput.value.trim() || '请输入分支名';
+            cloneOutput.textContent = `git clone -b "${branch}" "${repo}"`;
+        }
+        
+        cloneRepoInput.addEventListener('input', updateCloneCommand);
+        cloneBranchInput.addEventListener('input', updateCloneCommand);
+
+
+        // 复制命令功能
+        function copyCommand(outputId, btn) {
+            const output = document.getElementById(outputId);
+            const text = output.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = '已复制';
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 1500);
+            }).catch(err => {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                
+                const originalText = btn.textContent;
+                btn.textContent = '已复制';
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>
