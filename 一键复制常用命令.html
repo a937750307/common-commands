@@ -39,7 +39,60 @@
     <script>
         function copyCommand(btn) {
             const code = btn.closest('.command-item').querySelector('.command-code').textContent;
-            navigator.clipboard.writeText(code).then(() => { btn.textContent = '已复制'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 1500); });
+            
+            // 优先使用 Clipboard API
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(code).then(() => {
+                    btn.textContent = '已复制';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.textContent = '复制';
+                        btn.classList.remove('copied');
+                    }, 1500);
+                }).catch(() => {
+                    // Clipboard API 失败，使用备用方案
+                    fallbackCopy(code, btn);
+                });
+            } else {
+                // 不支持 Clipboard API，直接使用备用方案
+                fallbackCopy(code, btn);
+            }
+        }
+        
+        // 备用复制方案（兼容旧版浏览器和手机端）
+        function fallbackCopy(text, btn) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            textarea.style.top = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            
+            let copied = false;
+            try {
+                copied = document.execCommand('copy');
+            } catch (err) {
+                copied = false;
+            }
+            
+            document.body.removeChild(textarea);
+            
+            if (copied) {
+                btn.textContent = '已复制';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '复制';
+                    btn.classList.remove('copied');
+                }, 1500);
+            } else {
+                // 如果复制仍然失败，提示用户手动复制
+                btn.textContent = '复制失败';
+                setTimeout(() => {
+                    btn.textContent = '复制';
+                }, 1500);
+            }
         }
         document.getElementById('search').addEventListener('input', function(e) {
             const kw = e.target.value.toLowerCase();
